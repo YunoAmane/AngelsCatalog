@@ -1,7 +1,22 @@
 package Vista;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.jdesktop.beansbinding.AbstractBindingListener;
+import org.jdesktop.beansbinding.Binding;
+import org.jdesktop.beansbinding.PropertyStateEvent;
+import com.mysql.jdbc.ResultSetMetaData;
+import com.mysql.jdbc.Statement;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 
 public class Principal extends javax.swing.JFrame {
 
@@ -14,6 +29,7 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         initComponents();
+         setIconImage(new ImageIcon(getClass().getResource("/Img/42349585.jpg")).getImage());
         dialogLogin.setSize(420, 250);
         dialogLogin.setLocationRelativeTo(this);
         dialogLogin.setVisible(true);
@@ -43,6 +59,7 @@ public class Principal extends javax.swing.JFrame {
         labelArticulos = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableInput = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         dialogLogin.setTitle("Inicio de Sesión");
         dialogLogin.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -121,16 +138,18 @@ public class Principal extends javax.swing.JFrame {
         tableInput.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         tableInput.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "id", "cantidad", "codigo", "descripcion", "precio", "subtotal", "total"
             }
         ));
         jScrollPane1.setViewportView(tableInput);
+
+        jButton1.setText("GUARDAR");
 
         javax.swing.GroupLayout panelInputLayout = new javax.swing.GroupLayout(panelInput);
         panelInput.setLayout(panelInputLayout);
@@ -151,6 +170,10 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(24, 24, 24)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(29, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInputLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(185, 185, 185))
         );
         panelInputLayout.setVerticalGroup(
             panelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,7 +186,8 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(labelUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(47, 47, 47)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(jButton1))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -246,6 +270,7 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonIngresar;
     private javax.swing.JDialog dialogLogin;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
