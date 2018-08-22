@@ -8,42 +8,46 @@ import org.jdesktop.beansbinding.Binding;
 import org.jdesktop.beansbinding.PropertyStateEvent;
 import com.mysql.jdbc.ResultSetMetaData;
 import com.mysql.jdbc.Statement;
+import java.awt.Desktop;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.PrinterJob;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 
 public class Principal extends javax.swing.JFrame {
 
     static String username;
     static int articulos;
     static DefaultTableModel model = new DefaultTableModel();
- protected java.sql.Connection con = null;
-  protected Statement st = null;
-  protected ResultSet rs = null;
-  protected boolean reg = true;
-  protected ResultSetMetaData rsMt;
-  protected String jdbc = "com.mysql.jdbc.Driver";
-  protected String url = "jdbc:mysql://";
-  protected int col;
-  int action = 0;
-    
+    protected java.sql.Connection con = null;
+    protected Statement st = null;
+    protected ResultSet rs = null;
+    protected boolean reg = true;
+    protected ResultSetMetaData rsMt;
+    protected String jdbc = "com.mysql.jdbc.Driver";
+    protected String url = "jdbc:mysql://";
+    protected int col;
+    int action = 0;
+
     /**
      * Creates new form Principal
      */
     public Principal() {
         initComponents();
-         setIconImage(new ImageIcon(getClass().getResource("/Img/42349585.jpg")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/Img/42349585.jpg")).getImage());
         dialogLogin.setSize(420, 250);
         dialogLogin.setLocationRelativeTo(this);
         dialogLogin.setVisible(true);
-        
-         
+
     }
 
     /**
@@ -69,7 +73,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         labelArticulos = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tableInput = new javax.swing.JTable();
+        tableSelect = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         txUser = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -80,10 +84,12 @@ public class Principal extends javax.swing.JFrame {
         txtDbName = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         txaLog = new javax.swing.JTextArea();
+        cboSelTable = new javax.swing.JComboBox();
         btnConnect = new javax.swing.JButton();
-        btnLlenarTabla = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
+        btnImp = new javax.swing.JButton();
 
         dialogLogin.setTitle("Inicio de Sesión");
         dialogLogin.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -159,8 +165,8 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel4.setText("Articulos:");
 
-        tableInput.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        tableInput.setModel(new javax.swing.table.DefaultTableModel(
+        tableSelect.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        tableSelect.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -171,7 +177,7 @@ public class Principal extends javax.swing.JFrame {
                 "id", "cantidad", "codigo", "descripcion", "precio", "subtotal", "total"
             }
         ));
-        jScrollPane1.setViewportView(tableInput);
+        jScrollPane1.setViewportView(tableSelect);
 
         jLabel5.setText("User");
 
@@ -194,6 +200,43 @@ public class Principal extends javax.swing.JFrame {
         txaLog.setRows(5);
         jScrollPane2.setViewportView(txaLog);
 
+        cboSelTable.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "nombre de los articulos" }));
+        cboSelTable.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cboSelTableactualizarTabla(evt);
+            }
+        });
+
+        btnConnect.setText("CONECTAR");
+        btnConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConnectjdbcConnect(evt);
+            }
+        });
+
+        btnAgregar.setText("AGREGAR");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+
+        btnActualizar.setText("ACTUALIZAR");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+
+        btnBorrar.setText("BORRAR");
+
+        btnImp.setText("IMPRIMIR");
+        btnImp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImpActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelInputLayout = new javax.swing.GroupLayout(panelInput);
         panelInput.setLayout(panelInputLayout);
         panelInputLayout.setHorizontalGroup(
@@ -215,9 +258,19 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(txtHost, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtDbName, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                        .addGap(18, 18, 18))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtDbName, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE))
+                    .addGroup(panelInputLayout.createSequentialGroup()
+                        .addComponent(btnConnect)
+                        .addGap(187, 187, 187)
+                        .addComponent(btnAgregar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnActualizar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBorrar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnImp)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(panelInputLayout.createSequentialGroup()
                         .addGroup(panelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelInputLayout.createSequentialGroup()
@@ -228,9 +281,13 @@ public class Principal extends javax.swing.JFrame {
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(labelArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 635, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(61, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addComponent(cboSelTable, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInputLayout.createSequentialGroup()
+                        .addGroup(panelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1))
+                        .addGap(18, 18, 18))))
         );
         panelInputLayout.setVerticalGroup(
             panelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,45 +298,31 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(labelArticulos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(labelUsername, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(32, 32, 32)
+                .addGap(18, 18, 18)
                 .addGroup(panelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(txtPasswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
                     .addComponent(txtHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
                     .addComponent(jLabel8)
                     .addComponent(txtDbName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(132, 132, 132)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
-                .addGap(21, 21, 21))
+                .addGap(18, 18, 18)
+                .addComponent(cboSelTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(panelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnConnect)
+                    .addComponent(btnAgregar)
+                    .addComponent(btnActualizar)
+                    .addComponent(btnBorrar)
+                    .addComponent(btnImp))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        btnConnect.setText("CONECTAR");
-        btnConnect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConnectjdbcConnect(evt);
-            }
-        });
-
-        btnLlenarTabla.setText("GUARDAR");
-        btnLlenarTabla.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLlenarTablaActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("IMPRIMIR");
-
-        btnBorrar.setText("BORRAR");
-        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBorrarActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -287,31 +330,14 @@ public class Principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(btnConnect)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnLlenarTabla)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBorrar)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1))
-                    .addComponent(panelInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panelInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(2, 2, 2)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnConnect)
-                    .addComponent(btnLlenarTabla)
-                    .addComponent(btnBorrar)
-                    .addComponent(jButton1))
-                .addContainerGap())
+                .addComponent(panelInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -328,7 +354,7 @@ public class Principal extends javax.swing.JFrame {
         articulos = (Integer) spinnerArticulos.getValue();
         if (username.isEmpty()) {
             JOptionPane.showConfirmDialog(this, "Ingrese su nombre por favor", "Error: Inicio de Sesión", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
-        } else if ((Integer)spinnerArticulos.getValue() <= 0) {
+        } else if ((Integer) spinnerArticulos.getValue() <= 0) {
             JOptionPane.showConfirmDialog(this, "Ingrese el número de articulos", "Error: Inicio de Sesión", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
         } else {
             dialogLogin.setVisible(false);
@@ -339,13 +365,11 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_buttonIngresarActionPerformed
 
-    private void btnLlenarTablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLlenarTablaActionPerformed
-       LlenarTabla();
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         addReg();
-    }//GEN-LAST:event_btnLlenarTablaActionPerformed
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnConnectjdbcConnect(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectjdbcConnect
-       connect("root", "root", "localhost:3306", "AngelCatalogo" + "?characterEncoding=UTF-8&useSSL=false");
         String user = txUser.getText();
         String passwd = "";
         String host = txtHost.getText();
@@ -353,15 +377,64 @@ public class Principal extends javax.swing.JFrame {
         for (char x : txtPasswd.getPassword()) {
             passwd = passwd + x;
         }
-       connect(user, passwd, host, dbname);
+        connect(user, passwd, host, dbname);
 
         btnConnect.setEnabled(false);
-        
+
     }//GEN-LAST:event_btnConnectjdbcConnect
 
     private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
- action = 2;       
+        action = 2;
     }//GEN-LAST:event_btnBorrarActionPerformed
+
+    private void cboSelTableactualizarTabla(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboSelTableactualizarTabla
+        rellenarTabla();
+    }//GEN-LAST:event_cboSelTableactualizarTabla
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        String table = cboSelTable.getSelectedItem().toString();
+        String campo;
+        String reference;
+        switch (action) {
+            case 0:
+                campo = tableSelect.getColumnName(0);
+                reference = model.getValueAt(tableSelect.getSelectedRow(), 0).toString();
+                System.out.println("modificar");
+                System.out.println(tableSelect.getValueAt(tableSelect.getEditingRow(), tableSelect.getEditingColumn()));
+
+                break;
+            case 1:
+                System.out.println("Agregar reg");
+                System.out.println(model.getRowCount());
+
+                break;
+            case 2:
+                System.out.println("delete");
+                campo = tableSelect.getColumnName(0);
+                reference = model.getValueAt(tableSelect.getSelectedRow(), 0).toString();
+
+                System.out.println(campo);
+                System.out.println(reference);
+
+                 {
+                    try {
+                        st.execute("DELETE FROM " + table + " WHERE " + campo + " = " + reference + ";");
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                System.out.println("delete sucess");
+
+                break;
+
+        }
+        rellenarTabla();
+        action = 0;
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnImpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImpActionPerformed
+        imprimir(jdbc);
+    }//GEN-LAST:event_btnImpActionPerformed
 
     /**
      * @param args the command line arguments
@@ -397,57 +470,117 @@ public class Principal extends javax.swing.JFrame {
             }
         });
     }
-public void connect(String user, String passwd, String host, String dbName) {
-    long t0;
-    long t1;
-    long dif;
-    try {
-      //cargar nuestro driver
-      Class.forName(jdbc);
-      t0 = System.currentTimeMillis();
-      con = DriverManager.getConnection(url + host + "/" + dbName + "?characterEncoding=UTF-8&useSSL=false", user, passwd);
-      st = (Statement) con.createStatement();
-      t1 = System.currentTimeMillis();
-      dif = t1 - t0;
-      System.out.println("conexion establecida");
 
-     JOptionPane.showMessageDialog(null, "conection succes: " + dif / 1000 + " seconds", "That's ok", JOptionPane.INFORMATION_MESSAGE);
-      txaLog.setText(txaLog.getText() + "conect success in " + dif + " seconds\n");
-    } catch (ClassNotFoundException | SQLException e) {
-      System.out.println("error de conexion\n" + e.toString());
-      txaLog.setText(txaLog.getText() + e.toString() + "\n");
+    public void addReg() {
+        model.addRow(new Object[col]);
+        action = 1;
     }
-}
- public void addReg() {
-    model.addRow(new Object[col]);
-    action = 1;
- }
-  public void LlenarTabla() {
-    try {
-     
-      
 
-      while (rs.next()) {
-        Object[] fila = new Object[col];
-        for (int y = 0; y < col; y++) {
-          fila[y] = rs.getObject(y + 1);
+    public void rellenarTabla() {
+        try {
+            select(cboSelTable.getSelectedItem().toString());
+            model = new DefaultTableModel();
+            this.tableSelect.setModel(model);
+            for (String x : getColLabel()) {
+                model.addColumn(x);
+            }
+
+            while (rs.next()) {
+                Object[] fila = new Object[col];
+                for (int y = 0; y < col; y++) {
+                    fila[y] = rs.getObject(y + 1);
+                }
+                model.addRow(fila);
+            }
+
+            tableSelect.setVisible(true);
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            txaLog.setText(txaLog.getText() + ex.toString());
         }
-        model.addRow(fila);
-      }
-
-     
-    } catch (SQLException ex) {
-      System.out.println(ex.toString());
-      txaLog.setText(txaLog.getText() + ex.toString());
     }
-  }
+
+    public void connect(String user, String passwd, String host, String dbName) {
+        long t0;
+        long t1;
+        long dif;
+        try {
+            //cargar nuestro driver
+            Class.forName(jdbc);
+            t0 = System.currentTimeMillis();
+            con = DriverManager.getConnection(url + host + "/" + dbName + "?characterEncoding=UTF-8&useSSL=false", user, passwd);
+            st = (Statement) con.createStatement();
+            t1 = System.currentTimeMillis();
+            dif = t1 - t0;
+            System.out.println("conexion establecida");
+
+            JOptionPane.showMessageDialog(null, "conection succes: " + dif / 1000 + " seconds", "That's ok", JOptionPane.INFORMATION_MESSAGE);
+            txaLog.setText(txaLog.getText() + "conect success in " + dif + " seconds\n");
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("error de conexion\n" + e.toString());
+            txaLog.setText(txaLog.getText() + e.toString() + "\n");
+        }
+    }
+
+    public void select(String table) {
+        try {
+            col = 0;
+            st = (Statement) con.createStatement();
+            rs = st.executeQuery("SELECT * FROM " + table);
+            rsMt = (ResultSetMetaData) rs.getMetaData();
+            col = rsMt.getColumnCount();
+        } catch (SQLException ex) {
+            System.out.println(ex.toString());
+            txaLog.setText(txaLog.getText() + ex.toString());
+        }
+    }
+
+    public String[] getColLabel() {
+        String[] labels = new String[col];
+        for (int i = 0; i < col; i++) {
+            try {
+                labels[i] = rsMt.getColumnLabel(i + 1);
+            } catch (SQLException ex) {
+                System.out.println(ex.toString());
+                txaLog.setText(txaLog.getText() + ex.toString());
+            }
+        }
+        return labels;
+    }
+public void imprimir(String rutaDoc)
+{
+       PrinterJob job = PrinterJob.getPrinterJob();
+       job.printDialog();
+       String impresora=job.getPrintService().getName();
+ /*
+       //ESTE ES TU CÓDIGO
+       java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+       java.io.File fichero = new java.io.File(rutaDoc);
+       if (desktop.isSupported(Desktop.Action.PRINT)){
+            try {
+              try{
+                 Process pr = Runtime.getRuntime().exec("Rundll32 printui.dll,PrintUIEntry /y /n \""+impresora+"\"");
+                  }catch(Exception ex){
+                    System.out.println("Ha ocurrido un error al ejecutar el comando. Error: "+ex);
+                  }
+            desktop.print(fichero);
+           } catch (Exception e){
+System.out.print("El sistema no permite imprimir usando la clase Desktop");
+e.printStackTrace();
+}
+}else{
+System.out.print("El sistema no permite imprimir usando la clase Desktop");
+}*/
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnConnect;
-    private javax.swing.JButton btnLlenarTabla;
+    private javax.swing.JButton btnImp;
     private javax.swing.JButton buttonIngresar;
+    private javax.swing.JComboBox cboSelTable;
     private javax.swing.JDialog dialogLogin;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -463,7 +596,7 @@ public void connect(String user, String passwd, String host, String dbName) {
     private javax.swing.JLabel labelUsername;
     private javax.swing.JPanel panelInput;
     private javax.swing.JSpinner spinnerArticulos;
-    private javax.swing.JTable tableInput;
+    private javax.swing.JTable tableSelect;
     private javax.swing.JTextField textFieldUsername;
     private javax.swing.JTextField txUser;
     private javax.swing.JTextArea txaLog;
@@ -472,4 +605,5 @@ public void connect(String user, String passwd, String host, String dbName) {
     private javax.swing.JPasswordField txtPasswd;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
+
 }
