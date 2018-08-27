@@ -45,7 +45,7 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/Img/42349585.jpg")).getImage());
         dialogLogin.setSize(420, 250);
-        dialogLogin.setLocationRelativeTo(this);
+        dialogLogin.setLocationRelativeTo(null);
         dialogLogin.setVisible(true);
 
     }
