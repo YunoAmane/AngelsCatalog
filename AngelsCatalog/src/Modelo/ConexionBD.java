@@ -24,7 +24,7 @@ public class ConexionBD
         }
         cbd = new ConexionBD();
         //cbd.show();    
-        System.out.println("Ejemplo 1");
+        System.out.println("Ejemplo 2");
     }
 
 }
