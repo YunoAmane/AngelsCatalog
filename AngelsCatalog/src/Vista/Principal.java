@@ -44,7 +44,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/Img/42349585.jpg")).getImage());
-        dialogLogin.setSize(420, 250);
+        dialogLogin.setSize(400, 250);
         dialogLogin.setLocationRelativeTo(null);
         dialogLogin.setVisible(true);
 
@@ -84,12 +84,11 @@ public class Principal extends javax.swing.JFrame {
         txtDbName = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         txaLog = new javax.swing.JTextArea();
-        cboSelTable = new javax.swing.JComboBox();
         btnConnect = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
-        btnActualizar = new javax.swing.JButton();
+        btnSalir = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
-        btnImp = new javax.swing.JButton();
 
         dialogLogin.setTitle("Inicio de Sesión");
         dialogLogin.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -159,7 +158,8 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(22, 22, 22))
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setUndecorated(true);
 
         jLabel3.setText("Cliente");
 
@@ -168,15 +168,29 @@ public class Principal extends javax.swing.JFrame {
         tableSelect.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         tableSelect.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "id", "cantidad", "codigo", "descripcion", "precio", "subtotal", "total"
+                "cantidad", "codigo", "descripcion", "precio", "subtotal", "total"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tableSelect);
 
         jLabel5.setText("User");
@@ -200,13 +214,6 @@ public class Principal extends javax.swing.JFrame {
         txaLog.setRows(5);
         jScrollPane2.setViewportView(txaLog);
 
-        cboSelTable.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "nombre de los articulos" }));
-        cboSelTable.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cboSelTableactualizarTabla(evt);
-            }
-        });
-
         btnConnect.setText("CONECTAR");
         btnConnect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -221,19 +228,19 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        btnActualizar.setText("ACTUALIZAR");
-        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+        btnSalir.setText("SALIR");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActualizarActionPerformed(evt);
+                btnSalirActionPerformed(evt);
             }
         });
 
-        btnBorrar.setText("BORRAR");
+        jButton1.setText("jButton1");
 
-        btnImp.setText("IMPRIMIR");
-        btnImp.addActionListener(new java.awt.event.ActionListener() {
+        btnBorrar.setText("BORRAR");
+        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnImpActionPerformed(evt);
+                btnBorrarActionPerformed(evt);
             }
         });
 
@@ -262,26 +269,23 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(txtDbName, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE))
                     .addGroup(panelInputLayout.createSequentialGroup()
                         .addComponent(btnConnect)
-                        .addGap(187, 187, 187)
+                        .addGap(102, 102, 102)
                         .addComponent(btnAgregar)
                         .addGap(18, 18, 18)
-                        .addComponent(btnActualizar)
+                        .addComponent(jButton1)
                         .addGap(18, 18, 18)
                         .addComponent(btnBorrar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnImp)
+                        .addGap(141, 141, 141)
+                        .addComponent(btnSalir)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(panelInputLayout.createSequentialGroup()
-                        .addGroup(panelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelInputLayout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(146, 146, 146)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(labelArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(cboSelTable, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(146, 146, 146)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(labelArticulos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInputLayout.createSequentialGroup()
                         .addGroup(panelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -308,9 +312,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(jLabel8)
                     .addComponent(txtDbName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(cboSelTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(56, 56, 56)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -318,9 +320,9 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(panelInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConnect)
                     .addComponent(btnAgregar)
-                    .addComponent(btnActualizar)
-                    .addComponent(btnBorrar)
-                    .addComponent(btnImp))
+                    .addComponent(btnSalir)
+                    .addComponent(jButton1)
+                    .addComponent(btnBorrar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -365,8 +367,43 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_buttonIngresarActionPerformed
 
+    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
+ DefaultTableModel model = (DefaultTableModel) tableSelect.getModel(); 
+
+int a = tableSelect.getSelectedRow(); 
+
+if (a<0){
+
+        JOptionPane.showMessageDialog(null,
+        "Debe seleccionar una fila de la tabla" );  
+
+}else {
+
+
+     int confirmar=JOptionPane.showConfirmDialog(null,  
+     "Esta seguro que desea Eliminar el registro? ");
+
+
+
+            if(JOptionPane.OK_OPTION==confirmar) {
+
+
+                     
+                    model.removeRow(a);
+
+                    JOptionPane.showMessageDialog(null, 
+                    "Registro Eliminado" );
+             
+             }
+}
+    }//GEN-LAST:event_btnBorrarActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+ System.exit(0);
+    }//GEN-LAST:event_btnSalirActionPerformed
+
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        addReg();
+    rellenarTabla();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnConnectjdbcConnect(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectjdbcConnect
@@ -380,62 +417,76 @@ public class Principal extends javax.swing.JFrame {
         connect(user, passwd, host, dbname);
 
         btnConnect.setEnabled(false);
-
     }//GEN-LAST:event_btnConnectjdbcConnect
 
-    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
-        action = 2;
-    }//GEN-LAST:event_btnBorrarActionPerformed
 
-    private void cboSelTableactualizarTabla(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cboSelTableactualizarTabla
-        rellenarTabla();
-    }//GEN-LAST:event_cboSelTableactualizarTabla
+ 
+    public void connect(String user, String passwd, String host, String dbName) {
+        long t0;
+        long t1;
+        long dif;
+        try {
+            //cargar nuestro driver
+            Class.forName(jdbc);
+            t0 = System.currentTimeMillis();
+            con = DriverManager.getConnection(url + host + "/" + dbName + "?characterEncoding=UTF-8&useSSL=false", user, passwd);
+            st = (Statement) con.createStatement();
+            t1 = System.currentTimeMillis();
+            dif = t1 - t0;
+            System.out.println("conexion establecida");
 
-    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        String table = cboSelTable.getSelectedItem().toString();
-        String campo;
-        String reference;
-        switch (action) {
-            case 0:
-                campo = tableSelect.getColumnName(0);
-                reference = model.getValueAt(tableSelect.getSelectedRow(), 0).toString();
-                System.out.println("modificar");
-                System.out.println(tableSelect.getValueAt(tableSelect.getEditingRow(), tableSelect.getEditingColumn()));
-
-                break;
-            case 1:
-                System.out.println("Agregar reg");
-                System.out.println(model.getRowCount());
-
-                break;
-            case 2:
-                System.out.println("delete");
-                campo = tableSelect.getColumnName(0);
-                reference = model.getValueAt(tableSelect.getSelectedRow(), 0).toString();
-
-                System.out.println(campo);
-                System.out.println(reference);
-
-                 {
-                    try {
-                        st.execute("DELETE FROM " + table + " WHERE " + campo + " = " + reference + ";");
-                    } catch (SQLException ex) {
-                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-                System.out.println("delete sucess");
-
-                break;
-
+            JOptionPane.showMessageDialog(null, "conection succes: " + dif / 1000 + " seconds", "That's ok", JOptionPane.INFORMATION_MESSAGE);
+            txaLog.setText(txaLog.getText() + "conect success in " + dif + " seconds\n");
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("error de conexion\n" + e.toString());
+            txaLog.setText(txaLog.getText() + e.toString() + "\n");
         }
-        rellenarTabla();
-        action = 0;
-    }//GEN-LAST:event_btnActualizarActionPerformed
+    }
 
-    private void btnImpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImpActionPerformed
-        imprimir(jdbc);
-    }//GEN-LAST:event_btnImpActionPerformed
+   
 
+   
+  
+public void imprimir(String rutaDoc)
+{
+       
+}
+ public void rellenarTabla() {
+    try {
+     // select(.getSelectedItem().toString());
+      model = new DefaultTableModel();
+      this.tableSelect.setModel(model);
+      for (String x : getColLabel()) {
+        model.addColumn(x);
+      }
+
+      while (rs.next()) {
+        Object[] fila = new Object[col];
+        for (int y = 0; y < col; y++) {
+          fila[y] = rs.getObject(y + 1);
+        }
+        model.addRow(fila);
+      }
+
+     // ptSelect.setVisible(true);
+    } catch (SQLException ex) {
+      System.out.println(ex.toString());
+      txaLog.setText(txaLog.getText() + ex.toString());
+    }
+  }
+ public String[] getColLabel() {
+    String[] labels = new String[col];
+    for (int i = 0; i < col; i++) {
+      try {
+        labels[i] = rsMt.getColumnLabel(i + 1);
+      } catch (SQLException ex) {
+        System.out.println(ex.toString());
+        txaLog.setText(txaLog.getText() + ex.toString());
+      }
+    }
+    return labels;
+  }
+    
     /**
      * @param args the command line arguments
      */
@@ -471,116 +522,15 @@ public class Principal extends javax.swing.JFrame {
         });
     }
 
-    public void addReg() {
-        model.addRow(new Object[col]);
-        action = 1;
-    }
-
-    public void rellenarTabla() {
-        try {
-            select(cboSelTable.getSelectedItem().toString());
-            model = new DefaultTableModel();
-            this.tableSelect.setModel(model);
-            for (String x : getColLabel()) {
-                model.addColumn(x);
-            }
-
-            while (rs.next()) {
-                Object[] fila = new Object[col];
-                for (int y = 0; y < col; y++) {
-                    fila[y] = rs.getObject(y + 1);
-                }
-                model.addRow(fila);
-            }
-
-            tableSelect.setVisible(true);
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-            txaLog.setText(txaLog.getText() + ex.toString());
-        }
-    }
-
-    public void connect(String user, String passwd, String host, String dbName) {
-        long t0;
-        long t1;
-        long dif;
-        try {
-            //cargar nuestro driver
-            Class.forName(jdbc);
-            t0 = System.currentTimeMillis();
-            con = DriverManager.getConnection(url + host + "/" + dbName + "?characterEncoding=UTF-8&useSSL=false", user, passwd);
-            st = (Statement) con.createStatement();
-            t1 = System.currentTimeMillis();
-            dif = t1 - t0;
-            System.out.println("conexion establecida");
-
-            JOptionPane.showMessageDialog(null, "conection succes: " + dif / 1000 + " seconds", "That's ok", JOptionPane.INFORMATION_MESSAGE);
-            txaLog.setText(txaLog.getText() + "conect success in " + dif + " seconds\n");
-        } catch (ClassNotFoundException | SQLException e) {
-            System.out.println("error de conexion\n" + e.toString());
-            txaLog.setText(txaLog.getText() + e.toString() + "\n");
-        }
-    }
-
-    public void select(String table) {
-        try {
-            col = 0;
-            st = (Statement) con.createStatement();
-            rs = st.executeQuery("SELECT * FROM " + table);
-            rsMt = (ResultSetMetaData) rs.getMetaData();
-            col = rsMt.getColumnCount();
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-            txaLog.setText(txaLog.getText() + ex.toString());
-        }
-    }
-
-    public String[] getColLabel() {
-        String[] labels = new String[col];
-        for (int i = 0; i < col; i++) {
-            try {
-                labels[i] = rsMt.getColumnLabel(i + 1);
-            } catch (SQLException ex) {
-                System.out.println(ex.toString());
-                txaLog.setText(txaLog.getText() + ex.toString());
-            }
-        }
-        return labels;
-    }
-public void imprimir(String rutaDoc)
-{
-       PrinterJob job = PrinterJob.getPrinterJob();
-       job.printDialog();
-       String impresora=job.getPrintService().getName();
- /*
-       //ESTE ES TU CÓDIGO
-       java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
-       java.io.File fichero = new java.io.File(rutaDoc);
-       if (desktop.isSupported(Desktop.Action.PRINT)){
-            try {
-              try{
-                 Process pr = Runtime.getRuntime().exec("Rundll32 printui.dll,PrintUIEntry /y /n \""+impresora+"\"");
-                  }catch(Exception ex){
-                    System.out.println("Ha ocurrido un error al ejecutar el comando. Error: "+ex);
-                  }
-            desktop.print(fichero);
-           } catch (Exception e){
-System.out.print("El sistema no permite imprimir usando la clase Desktop");
-e.printStackTrace();
-}
-}else{
-System.out.print("El sistema no permite imprimir usando la clase Desktop");
-}*/
-}
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBorrar;
     private javax.swing.JButton btnConnect;
-    private javax.swing.JButton btnImp;
+    private javax.swing.JButton btnSalir;
     private javax.swing.JButton buttonIngresar;
-    private javax.swing.JComboBox cboSelTable;
     private javax.swing.JDialog dialogLogin;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
