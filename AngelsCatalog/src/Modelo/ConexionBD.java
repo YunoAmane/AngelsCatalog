@@ -25,6 +25,7 @@ public class ConexionBD
         cbd = new ConexionBD();
         //cbd.show();    
         System.out.println("Ahora si se pueden subir cambios :3");
+        System.out.println("Ya estamos en sintonia ahora si :3");
     }
 
 }

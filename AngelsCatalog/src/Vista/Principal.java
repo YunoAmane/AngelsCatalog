@@ -474,15 +474,10 @@ public void imprimir(String rutaDoc)
       txaLog.setText(txaLog.getText() + ex.toString());
     }
   }
- public String[] getColLabel() {
+ public String[] getColLabel() throws SQLException {
     String[] labels = new String[col];
     for (int i = 0; i < col; i++) {
-      try {
         labels[i] = rsMt.getColumnLabel(i + 1);
-      } catch (SQLException ex) {
-        System.out.println(ex.toString());
-        txaLog.setText(txaLog.getText() + ex.toString());
-      }
     }
     return labels;
   }
