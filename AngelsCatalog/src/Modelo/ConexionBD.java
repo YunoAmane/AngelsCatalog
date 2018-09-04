@@ -24,9 +24,7 @@ public class ConexionBD
         }
         cbd = new ConexionBD();
         //cbd.show();    
-        System.out.println("Holi Angels Catalog :)");
-        //Este es un cambio hecho por Francisco
-        System.out.println("Hola soy Francisco");
+        System.out.println("Ahora si se pueden subir cambios :3");
     }
 
 }
